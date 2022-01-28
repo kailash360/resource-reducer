@@ -1,2 +1,0 @@
-value2
-value4
