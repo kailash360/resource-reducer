@@ -16,6 +16,9 @@ CURRENT_DIR = os.path.dirname(__file__)
 # List of subfolder in current folder,to be considered for checking
 SUB_FOLDERS = [CURRENT_DIR,'subfolder1','subfolder2']     
 
+# Attribute to be used from string tag 
+ATTRIBUTE = 'id'
+
 try:
     # path to the strings.xml file
     tree = ET.parse(STRING_XML_FILE)
@@ -24,7 +27,7 @@ try:
     # fetch all the ids from xml
     string_ids = []
     for item in root:
-        string_ids.append(item.attrib['id'])
+        string_ids.append(item.attrib[ATTRIBUTE])
 
     print("All string ids are: ",string_ids)
 
@@ -120,7 +123,7 @@ try:
                 
                 # if id of node not in list of unused string ids
                 # then add it to the list of final string ids
-                if node.attrib['id'] not in string_ids:
+                if node.attrib[ATTRIBUTE] not in string_ids:
                     used_string_ids.append(xmlContent[index])
             
         # save the list of used string ids in strings.xml
