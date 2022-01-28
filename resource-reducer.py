@@ -2,7 +2,7 @@ import os
 import xml.etree.ElementTree as ET
 
 # All valid file types to be considered for checming
-VALID_FILES = ['xml','txt']
+VALID_FILES = ['xml','txt','java','kt']
 
 # All the special files to be ignored in checking
 IGNORED_FILES = ['strings.xml','unused.txt']
@@ -14,7 +14,7 @@ STRING_XML_FILE = 'strings.xml'
 CURRENT_DIR = os.path.dirname(__file__)
 
 # List of subfolder in current folder,to be considered for checking
-SUB_FOLDERS = [CURRENT_DIR,'subfolder1']     
+SUB_FOLDERS = [CURRENT_DIR,'subfolder1','subfolder2']     
 
 try:
     # path to the strings.xml file
@@ -34,7 +34,11 @@ try:
         # Read the content of the file and check if the string exists
         with open(filename) as f:
             fileContent = f.read()
-            return text in fileContent
+            # print(fileContent)
+            check1 = f"R.string.{text}" in fileContent
+            check2 = f"@string/{text}" in fileContent
+            # print(f"@string/{text}")
+            return check1 or check2
         
     # function to extract a file type
     def fileType(filename):
@@ -47,11 +51,11 @@ try:
     # loop through all the sub-folders and get the index of used string IDs
     used_string_indices = []
     for subFolder in SUB_FOLDERS:
-
-        print("\tParsing ",subFolder)
             
         # get the path  of current folder
         currentFolder = os.path.join(os.path.dirname(__file__), subFolder)
+        
+        print("\tParsing ",currentFolder)
         
         # loop through all the files of the current folder
         for filename in os.listdir(currentFolder):
