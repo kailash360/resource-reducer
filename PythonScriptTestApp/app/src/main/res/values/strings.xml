@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">PythonScriptTestApp</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="unused1"><![CDATA[Host like a <b>pro</b>]]></string>
+    <string name="unused2">blank fragment 2</string>
+    <string name="unused3">blank %1$s fragment 3</string>
+    <string name="unused4">blank fragment 4</string>
+    <string name="unused5">blank fragment 5</string>
+    <string name="used1">Hello  %2$s fragment 1</string>
+    <string name="used2">Hello fragment 2</string>
+    <string name="used3"><![CDATA[Host like a <b>pro</b>]]></string>
+    <string name="used4">Hello fragment 4</string>
+    <string name="used5">Hello  fragment 5</string>
+    <string name="used6">Hello fragment 6</string>
+    <string name="used7">Hello <b> bold word </b>fragment 7</string>
+    <string name="used8">Hello &amp; fragment 8</string>
+
+</resources>
