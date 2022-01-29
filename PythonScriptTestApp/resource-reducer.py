@@ -1,3 +1,4 @@
+from calendar import c
 import os
 import xml.etree.ElementTree as ET
 
@@ -8,16 +9,26 @@ VALID_FILES = ['xml','txt','java','kt']
 IGNORED_FILES = ['strings.xml','unused.txt']
 
 # Path of strings.xml file
-STRING_XML_FILE = 'strings.xml'
+STRING_XML_FILE = os.path.join(os.path.dirname(__file__),'app\\src\\main\\res\\values\\strings.xml')
 
 # Path of current folder
 CURRENT_DIR = os.path.dirname(__file__)
 
 # List of subfolder in current folder,to be considered for checking
-SUB_FOLDERS = [CURRENT_DIR,'subfolder1','subfolder2']     
+SUB_FOLDERS = [
+    'app\\src\\androidTest\\java\\com\\tutushubham\\pythonscripttestapp',
+    'app\\src\\main',
+    'app\\src\\main\\java\\com\\tutushubham\\pythonscripttestapp',
+    'app\\src\\main\\res',
+    'app\\src\\main\\res\\drawable',
+    'app\\src\\main\\res\\drawable-v24',
+    'app\\src\\main\\res\\layout',
+    'app\\src\\main\\res\\mipmap-anydpi-v26',
+    'app\\src\\test\\java\\com\\tutushubham\\pythonscripttestapp'
+]     
 
 # Attribute to be used from string tag 
-ATTRIBUTE = 'id'
+ATTRIBUTE = 'name'
 
 try:
     # path to the strings.xml file
@@ -37,11 +48,11 @@ try:
         # Read the content of the file and check if the string exists
         with open(filename) as f:
             fileContent = f.read()
-            # print(fileContent)
+            
             check1 = f"R.string.{text}" in fileContent
             check2 = f"@string/{text}" in fileContent
-            # print(f"@string/{text}")
-            return check1 or check2
+            check3 = f"@string//{text}" in fileContent
+            return check1 or check2 or check3
         
     # function to extract a file type
     def fileType(filename):
@@ -61,15 +72,19 @@ try:
         print("\tParsing ",currentFolder)
         
         # loop through all the files of the current folder
-        for filename in os.listdir(currentFolder):
+        all_files = os.listdir(currentFolder)
+        for filename in all_files:
         
             # don't consider if the file is strings.xml or invalid type
-            if (filename in IGNORED_FILES) or (fileType(filename) not in VALID_FILES): continue
-            
-            print("\t\tParsing ",filename)
+            if (filename in IGNORED_FILES) or (fileType(filename) not in VALID_FILES) : continue
             
             # get the path of the current file
             filePath = os.path.join(currentFolder, filename)
+            
+            # if it is a directory, then don't consider
+            if os.path.isdir(filePath): continue
+            
+            print("\t\tParsing ",filename)
             
             # loop over all the string ids
             for index in range(len(string_ids)):
@@ -79,14 +94,18 @@ try:
                 isPresent = stringExists(filePath,id)
                 
                 # if string exists then add to the array of used indices
-                index += 1
                 if isPresent:
                     used_string_indices.append(index)
 
     print("All files parsed successfully")
 
     # update the string_ids to keep only the saved string_ids
-    string_ids = [string_ids[i] for i in range(len(string_ids)) if i in used_string_indices]
+    # string_ids = [string_ids[i] for i in range(len(string_ids)) if i not in used_string_indices]
+    temp = []
+    for i in range(len(string_ids)):
+        if i not in used_string_indices:
+            temp.append(string_ids[i])
+    string_ids = temp
 
     # save the list of unused string ids in a file
     with open('unused.txt', 'w') as unused_string_ids:

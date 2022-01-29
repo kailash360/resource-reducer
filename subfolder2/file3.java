@@ -1,2 +1,0 @@
-R.string.value5
-

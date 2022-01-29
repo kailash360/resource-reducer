@@ -1,3 +1,6 @@
-value2
-value4
-value6
+hello_blank_fragment
+unused1
+unused2
+unused3
+unused4
+unused5
