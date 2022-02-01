@@ -4,30 +4,30 @@ import datetime
 import xml.etree.ElementTree as ET
 now = str(datetime.datetime.now().strftime("%Y.%m.%d-%H.%M.%S"))
 
+# Path of current folder
+CURRENT_DIR = os.path.dirname(__file__)
+
+# Path of strings.xml file
+STRING_XML_FILE = os.path.join(os.path.dirname(__file__),'app\\src\\main\\res\\values\\strings.xml')
+
 # All valid file types to be considered for checming
 VALID_FILES = ['xml','txt','java','kt']
 
 # All the special files to be ignored in checking
 IGNORED_FILES = ['strings.xml','unused.txt']
 
-# Path of strings.xml file
-STRING_XML_FILE = os.path.join(os.path.dirname(__file__),'app\\src\\main\\res\\values\\strings.xml')
+# All the folders to be ignored
+IGNORED_FOLDERS = ['build','gradle','.gradle']
 
-# Path of current folder
-CURRENT_DIR = os.path.dirname(__file__)
+# Function to list all the subfolders
+def fast_scandir(dirname):
+    subfolders= [f.path for f in os.scandir(dirname) if f.is_dir() and f.name not in IGNORED_FOLDERS]
+    for dirname in list(subfolders):
+        subfolders.extend(fast_scandir(dirname))
+    return subfolders
 
 # List of subfolder in current folder,to be considered for checking
-SUB_FOLDERS = [
-    'app\\src\\androidTest\\java\\com\\tutushubham\\pythonscripttestapp',
-    'app\\src\\main',
-    'app\\src\\main\\java\\com\\tutushubham\\pythonscripttestapp',
-    'app\\src\\main\\res',
-    'app\\src\\main\\res\\drawable',
-    'app\\src\\main\\res\\drawable-v24',
-    'app\\src\\main\\res\\layout',
-    'app\\src\\main\\res\\mipmap-anydpi-v26',
-    'app\\src\\test\\java\\com\\tutushubham\\pythonscripttestapp'
-]     
+SUB_FOLDERS = fast_scandir(CURRENT_DIR)
 
 # Attribute to be used from string tag 
 ATTRIBUTE = 'name'
@@ -119,7 +119,7 @@ try:
         strings_file = f"File: {STRING_XML_FILE}\n\n"
         
         # final content to be written within the file
-        finalContent = strings_file + ''.join(string_ids)
+        finalContent = strings_file + '\n'.join(string_ids)
         unused_string_ids.write(finalContent)
         
     print("Unused ids have been listed in unused.txt successfully")
@@ -159,7 +159,7 @@ try:
             
         # save the list of used string ids in strings.xml
         with open(STRING_XML_FILE,'w') as xmlfile:
-            xmlfile.write('\n'.join(used_string_ids))
+            xmlfile.write(''.join(used_string_ids))
         
         print("strings.xml has been modified successfully")
 
