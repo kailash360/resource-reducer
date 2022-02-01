@@ -1,6 +1,8 @@
 from calendar import c
 import os
+import datetime
 import xml.etree.ElementTree as ET
+now = str(datetime.datetime.now().strftime("%Y.%m.%d-%H.%M.%S"))
 
 # All valid file types to be considered for checming
 VALID_FILES = ['xml','txt','java','kt']
@@ -29,6 +31,9 @@ SUB_FOLDERS = [
 
 # Attribute to be used from string tag 
 ATTRIBUTE = 'name'
+
+# Name of the file to be generated for storing unused ids
+UNUSED_FILE = f"unused-{now}.txt"
 
 try:
     # path to the strings.xml file
@@ -108,8 +113,15 @@ try:
     string_ids = temp
 
     # save the list of unused string ids in a file
-    with open('unused.txt', 'w') as unused_string_ids:
-        unused_string_ids.write('\n'.join(string_ids))
+    with open(UNUSED_FILE, 'w') as unused_string_ids:
+        
+        # first line of the file is the path of the strings.xml file used
+        strings_file = f"File: {STRING_XML_FILE}\n\n"
+        
+        # final content to be written within the file
+        finalContent = strings_file + ''.join(string_ids)
+        unused_string_ids.write(finalContent)
+        
     print("Unused ids have been listed in unused.txt successfully")
 
     # display the list of unused string ids

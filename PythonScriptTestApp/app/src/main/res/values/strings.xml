@@ -1,23 +1,14 @@
 <resources>
-
     <string name="app_name">PythonScriptTestApp</string>
-
+    <string name="abcd">PythonScriptTestApp</string>
     <string name="used1">Hello  %2$s fragment 1</string>
-
     <string name="used2">Hello fragment 2</string>
-
+    <string name="cdef">PythonScriptTestApp</string>
     <string name="used3"><![CDATA[Host like a <b>pro</b>]]></string>
-
     <string name="used4">Hello fragment 4</string>
-
     <string name="used5">Hello  fragment 5</string>
-
     <string name="used6">Hello fragment 6</string>
-
+    <string name="pqrs">PythonScriptTestApp</string>
     <string name="used7">Hello <b> bold word </b>fragment 7</string>
-
     <string name="used8">Hello &amp; fragment 8</string>
-
-
-
 </resources>
